@@ -50,22 +50,25 @@ public class CategoriesController
     // add the appropriate annotation for a get action
     @GetMapping("{id}")
     @PreAuthorize("permitAll()")
-    public Category getById(@PathVariable int id)
-    {
-        // get the category by id
+    public Category getById(@PathVariable int id) {
         try {
-            // Fetch the category by ID
             Category category = categoryDao.getById(id);
+
             if (category == null) {
-                // Return a 404 NOT_FOUND response if the category does not exist
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
             }
+
             return category;
+        } catch (ResponseStatusException ex) {
+            // Re-throw ResponseStatusException to preserve original status (404)
+            throw ex;
         } catch (Exception ex) {
-            // Handle errors and return a 500 INTERNAL_SERVER_ERROR response
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving category.");
+            System.err.println("Unexpected error retrieving category with ID: " + id);
+            ex.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving category.", ex);
         }
     }
+
 
     // the url to return all products in category 1 would look like this
     // https://localhost:8080/categories/1/products
