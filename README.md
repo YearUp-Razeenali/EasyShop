@@ -18,29 +18,52 @@ This project consists of an E-Commerce API (`easyshop` backend) and a client-sid
 - MySQL Server
 - Node.js (for frontend if applicable)
 
-## API Endpoints (Backend)
+# Diagram
 
-### Authentication
-- **POST** `/auth/login`: Logs in a user and returns a JWT token.
+This diagram represents the architecture of our E-Commerce API, specifically focusing on how the different components interact.
 
-### Categories
-- **GET** `/categories`: Retrieve all categories.
-- **GET** `/categories/{id}`: Retrieve a category by its ID.
-- **POST** `/categories`: Add a new category (Admin only).
-- **PUT** `/categories/{id}`: Update a category by ID (Admin only).
-- **DELETE** `/categories/{id}`: Delete a category by ID (Admin only).
+![E-Commerce API Architecture](path/to/your/diagram/image.png)
 
-### Products
-- **GET** `/products`: Search for products using filters like category, price range, and color.
-- **GET** `/products/{id}`: Retrieve a product by its ID.
-- **POST** `/products`: Add a new product (Admin only).
-- **PUT** `/products/{id}`: Update a product by ID (Admin only).
-- **DELETE** `/products/{id}`: Delete a product by ID (Admin only).
+---
 
-### Profiles
-- **GET** `/profile`: Retrieve the profile of the logged-in user.
-- **PUT** `/profile`: Update the profile of the logged-in user.
+## **Client Layer**
 
+- Represents the end-users or front-end applications interacting with the API.
+- Sends **HTTP requests** to the API endpoints via web browsers, mobile apps, or Postman.
+
+**Example**:
+- A user fetches all products using `GET /products`.
+
+---
+
+## **Controller Layer**
+
+- This layer handles incoming requests from the **Client** and maps them to appropriate business logic.
+- Acts as the entry point into the backend system.
+
+**Example**:
+- The `ProductsController` processes a request to fetch products and calls the **Service/DAO Layer**.
+
+---
+
+## **Service/DAO Layer**
+
+- The **Service** contains the core **business logic** of the application.
+- Communicates with the **Database** through DAO (Data Access Object) classes to retrieve or update data.
+- Ensures data integrity and implements rules like checking user permissions.
+
+**Example**:
+- The `ProductDao` fetches a list of products based on filters like price range and category.
+
+---
+
+## **Database Layer (MySQL)**
+
+- Stores all persistent data for the application, such as user profiles, product details, categories, etc.
+- Ensures relationships between entities are maintained, such as categories linked to products.
+
+**Example**:
+- A query fetches all products in a specific category.
 ## Testing
 1. Use Postman to test all endpoints.
 2. **Sample tests:**
