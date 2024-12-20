@@ -51,22 +51,13 @@ public class CategoriesController
     @GetMapping("{id}")
     @PreAuthorize("permitAll()")
     public Category getById(@PathVariable int id) {
-        try {
-            Category category = categoryDao.getById(id);
+        Category category = categoryDao.getById(id);
 
-            if (category == null) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
-            }
-
-            return category;
-        } catch (ResponseStatusException ex) {
-            // Re-throw ResponseStatusException to preserve original status (404)
-            throw ex;
-        } catch (Exception ex) {
-            System.err.println("Unexpected error retrieving category with ID: " + id);
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving category.", ex);
+        if (category == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
         }
+
+        return category;
     }
 
 
